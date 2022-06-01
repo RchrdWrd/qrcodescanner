@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="main.css">
+  </head>
+  <body>
+    <div class="page">
+      <div class="box">
+        <button id="startScan">scan qr code</button>
+        <span>qr code value: <span id="value">never scanned</span></span>
+        <button id="stopScan">stop scanning</button>
+      </div>
+      <video id="video"></video>
+    </div>
+
+    <script type="module">
+      import QrCode from "./main.js";
+
+      const couponcodes = [
+        "1111",
+        "2222",
+        "3333"
+      ]
+
+      var qr = new QrCode("video", (result) => resultHandler(result), (error) => errorHandler(error));
+
+      
+      function resultHandler(result) {
+        document.getElementById("value").textContent = result.data;
+
+        couponcodes.map((data) => { //check if qrcode's readed value is a coupon code
+          if (result.data === data)
+            document.getElementById("value").innerHTML = `<strong style="color:red">woah! you scanned a coupon code: ${result.data}</strong>`;
+        })
+      }
+
+      function errorHandler(error) {
+        //console.log(error) //loops error message (no qr code found)
+      }
+
+      document.getElementById("startScan").addEventListener("click", (e) => {
+        qr.scanner.setCamera(0); // set device id (default is 0 on desktop pc)
+        qr.scanner.start(); //start scanning
+      });
+
+      document.getElementById("stopScan").addEventListener("click", (e) => {
+        qr.scanner.stop(); //stop scanning
+      });
+    </script>
+  </body>
+  </body>
+</html>
