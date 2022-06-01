@@ -16,4 +16,4 @@
   3333
 
 
-  ...the script returns a custom message ;)
+  ...the script returns a custom message for coupon codes ;)
