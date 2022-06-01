@@ -16,4 +16,4 @@
   3333
 
 
-  ...the script return a custom message ;)
+  ...the script returns a custom message ;)
