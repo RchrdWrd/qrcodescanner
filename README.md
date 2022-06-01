@@ -2,14 +2,18 @@
  Basic QRCode Scanner for VEDOX :)
 
 # USAGE
+ May need to change deviceId variable (index.html) => 0, 1, 2, etc.. 
+ (default deviceId for usb camera is '0' on desktop pc)
+
  Click on start scan button and enjoy.
- I predefined 3 coupon code:
+ The script constantly scanning for qr codes visible on the camera (loop)
+ If u scan a qr code with value one of the 3 predefined coupon code:
 
   1111
 
   2222
 
   3333
-  
 
-  so if u read a qr code with text: 1111, u get a message.
+
+  ...the script return a custom message ;)

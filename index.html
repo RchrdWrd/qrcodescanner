@@ -18,7 +18,7 @@
 
     <script type="module">
       import QrCode from "./main.js";
-
+      const deviceId = 0;  // set device id (default is 0 on desktop pc)
       const couponcodes = [
         "1111",
         "2222",
@@ -27,7 +27,6 @@
 
       var qr = new QrCode("video", (result) => resultHandler(result), (error) => errorHandler(error));
 
-      
       function resultHandler(result) {
         document.getElementById("value").textContent = result.data;
 
@@ -42,7 +41,7 @@
       }
 
       document.getElementById("startScan").addEventListener("click", (e) => {
-        qr.scanner.setCamera(0); // set device id (default is 0 on desktop pc)
+        qr.scanner.setCamera(deviceId);
         qr.scanner.start(); //start scanning
       });
 
