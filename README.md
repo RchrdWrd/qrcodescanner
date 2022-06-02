@@ -2,8 +2,7 @@
  Basic QRCode Scanner for VEDOX :)
 
 # USAGE
- May need to change deviceId variable (index.html) => 0, 1, 2, etc.. 
- (default deviceId for usb camera is '0' on desktop pc)
+ If u have more cameras, the script ask you for which camera u want to use
 
  Click on start scan button and enjoy.
  The script constantly scanning for qr codes visible on the camera (loop)
