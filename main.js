@@ -11,11 +11,11 @@ function QrCode(videoElementId, resultHandler, errorHandler) {
     onDecodeError: (error) => {errorHandler(error)},
     highlightScanRegion: true,
     highlightCodeOutline: true,
-  });
+  })
 
   return {
     scanner: scanner
-  };
+  }
 }
 
 export default QrCode
