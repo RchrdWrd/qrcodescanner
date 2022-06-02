@@ -46,7 +46,7 @@
 
       document.getElementById("startScan").addEventListener("click", (e) => {
         qr.scanner.setCamera(devices[0].CameraId) //set default CameraId
-        if(devices.length > 1){
+        if(devices.length > 1){ // check if computer has multiple camera
           var deviceId = prompt(`We have more cameras:\n${devices.map((camera, index) => {
             return `\n${index}: ${camera.CameraLabel}`
           })}`, '0')
