@@ -18,4 +18,4 @@ function QrCode(videoElementId, resultHandler, errorHandler) {
   };
 }
 
-export default QrCode;
+export default QrCode
