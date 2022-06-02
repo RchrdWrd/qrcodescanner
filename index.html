@@ -12,42 +12,57 @@
         <button id="startScan">scan qr code</button>
         <span>qr code value: <span id="value">never scanned</span></span>
         <button id="stopScan">stop scanning</button>
+        <button id="listCameras">list available cameras</button>
       </div>
       <video id="video"></video>
     </div>
 
     <script type="module">
-      import QrCode from "./main.js";
-      const deviceId = 0;  // set device id (default is 0 on desktop pc)
+      import QrCode from "./main.js"
+      const qr = new QrCode("video", (result) => resultHandler(result), (error) => errorHandler(error))
+      const devices = []
       const couponcodes = [
         "1111",
         "2222",
         "3333"
       ]
 
-      var qr = new QrCode("video", (result) => resultHandler(result), (error) => errorHandler(error));
+      //list all cameras to 'devices' const.
+      qr.QrScanner.listCameras(true).then(cameras => cameras.map(camera => {
+        devices.push({"CameraId": camera.id, "CameraLabel": camera.label})
+      }))
 
       function resultHandler(result) {
-        document.getElementById("value").textContent = result.data;
-
+        document.getElementById("value").textContent = result.data
         couponcodes.map((data) => { //check if qrcode's readed value is a coupon code
           if (result.data === data)
-            document.getElementById("value").innerHTML = `<strong style="color:red">woah! you scanned a coupon code: ${result.data}</strong>`;
+            document.getElementById("value").innerHTML = `<strong style="color:red">woah! you scanned a coupon code: ${result.data}</strong>`
         })
-      }
+      } 
 
       function errorHandler(error) {
         //console.log(error) //loops error message (no qr code found)
       }
 
       document.getElementById("startScan").addEventListener("click", (e) => {
-        qr.scanner.setCamera(deviceId);
-        qr.scanner.start(); //start scanning
-      });
+        qr.scanner.setCamera(devices[0].CameraId) //set default CameraId
+        if(devices.length > 1){
+          var deviceId = prompt(`We have more cameras:\n${devices.map((camera, index) => {
+            return `\n${index}: ${camera.CameraLabel}`
+          })}`, '0')
+          qr.scanner.setCamera(devices[deviceId].CameraId).then(()=> {
+            qr.scanner.start()
+          })
+        } else 
+          qr.scanner.setCamera(devices[0].CameraId).then(()=> {
+            qr.scanner.start()
+          })
+      })
 
       document.getElementById("stopScan").addEventListener("click", (e) => {
-        qr.scanner.stop(); //stop scanning
-      });
+        qr.scanner.stop() //stop scanning
+      })
+
     </script>
   </body>
   </body>
