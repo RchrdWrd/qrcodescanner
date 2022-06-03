@@ -1,41 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
   <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="main.css">
+    <meta charset='UTF-8' />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <link rel='stylesheet' href='main.css'>
   </head>
   <body>
-    <div class="page">
-      <div class="box">
-        <button id="startScan">scan qr code</button>
-        <span>qr code value: <span id="value">never scanned</span></span>
-        <button id="stopScan">stop scanning</button>
+    <div class='page'>
+      <div class='box'>
+        <button id='startScan'>scan qr code</button>
+        <span>qr code value: <span id='value'>never scanned</span></span>
+        <button id='stopScan'>stop scanning</button>
+        <button id='switchCamera' disabled='true'>switch camera</button>
       </div>
-      <video id="video"></video>
+      <video id='video'></video>
     </div>
 
-    <script type="module">
-      import QrCode from "./main.js"
-      const qr = new QrCode("video", (result) => resultHandler(result), (error) => errorHandler(error))
-      const devices = []
+    <script type='module'>
+      import QrCode from './main.js'
+      const qr = new QrCode('video', (result) => resultHandler(result), (error) => errorHandler(error))
+
       const couponcodes = [
-        "1111",
-        "2222",
-        "3333"
+        '1111',
+        '2222',
+        '3333'
       ]
 
-      //list all cameras to 'devices' const.
-      qr.QrScanner.listCameras(true).then(cameras => cameras.map(camera => {
-        devices.push({"CameraId": camera.id, "CameraLabel": camera.label})
-      }))
-
       function resultHandler(result) {
-        document.getElementById("value").textContent = result.data
+        document.getElementById('value').textContent = result.data
         couponcodes.map((data) => { //check if qrcode's readed value is a coupon code
           if (result.data === data)
-            document.getElementById("value").innerHTML = `<strong style="color:red">woah! you scanned a coupon code: ${result.data}</strong>`
+            document.getElementById('value').innerHTML = `<strong style='color:red'>woah! you scanned a coupon code: ${result.data}</strong>`
         })
       } 
 
@@ -43,23 +39,18 @@
         //console.log(error) //loops error message (no qr code found)
       }
 
-      document.getElementById("startScan").addEventListener("click", (e) => {
-        qr.scanner.setCamera(devices[0].CameraId) //set default CameraId
-        if(devices.length > 1){ // check if computer has multiple camera
-          var deviceId = prompt(`We have more cameras:\n${devices.map((camera, index) => {
-            return `\n${index}: ${camera.CameraLabel}`
-          })}`, '0')
-          qr.scanner.setCamera(devices[deviceId].CameraId).then(()=> {
-            qr.scanner.start()
-          })
-        } else 
-          qr.scanner.setCamera(devices[0].CameraId).then(()=> {
-            qr.scanner.start()
-          })
+      document.getElementById('startScan').addEventListener('click', (e) => {
+        if(qr.hasMoreCamera())
+          document.getElementById('switchCamera').disabled = false
+        qr.start()
       })
 
-      document.getElementById("stopScan").addEventListener("click", (e) => {
+      document.getElementById('stopScan').addEventListener('click', (e) => {
         qr.scanner.stop() //stop scanning
+      })
+
+      document.getElementById('switchCamera').addEventListener('click', (e) => {
+        qr.switchCamera()
       })
     </script>
   </body>
